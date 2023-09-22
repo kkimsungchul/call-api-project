@@ -18,7 +18,7 @@ Header에 포함된 값을 알고 싶을때 (이건 그냥 postman 써도됨..)<
 ## 개발 환경
 ### 기본 환경
 - Windows 10
-- eclipse 2021-12 (4.22.0)
+- eclipse 2021-12 (4.22.0) / IntelliJ IDEA 2023.1 (Ultimate Edition)
 
 ### 서버 환경
 - JDK1.8 / JDK17 
