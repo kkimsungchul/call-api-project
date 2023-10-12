@@ -22,7 +22,7 @@ public class Main {
 		keyMap.put("keyValue", "glpat-Zhadfg1235898GXMuCF2Fdgh1SD2nJjeBUb");
 
 		//호출할 URL
-		String url = "호출할 API URL 입력";
+		String url = "http://localhost:8080/test";
 
 		//넘길 JSON 데이터
 		Map<String,Object> jsonDataMap = new HashMap<String, Object>();
@@ -31,15 +31,6 @@ public class Main {
 
 		//json 데이터로 변환
 		String jsonData = JsonUtils.convertMapToJson(jsonDataMap);
-
-
-		CallApiVO callApiVO = new CallApiVO.Builder()
-				.method("POST")
-				.url("https://api.example.com/endpoint")
-				.jsonData("{\"key\": \"value\"}")
-				.addKey("headerKey", "headerValue")
-				.build();
-
 
 		//Get 호출
 		Map<String,Object> getResultMap = callAPI.callRestAPI("get", url,null,keyMap);
@@ -51,17 +42,30 @@ public class Main {
 
 
 
-		//파일 읽기 예제
-		ReadFile readFile = new ReadFile();
-		try {
-			List<String> fileData = readFile.readFile("dataFolder\\data.txt");
-			for(String line : fileData) {
-				System.out.println("line : " + line);
-			}
 
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
+		CallApiVO callApiVO = new CallApiVO.Builder()
+				.method("POST")
+				.url("https://api.example.com/endpoint")
+				.jsonData("{\"key\": \"value\"}")
+				.addKey("headerKey", "headerValue")
+				.build();
+
+
+
+
+
+
+//		//파일 읽기 예제
+//		ReadFile readFile = new ReadFile();
+//		try {
+//			List<String> fileData = readFile.readFile("dataFolder\\data.txt");
+//			for(String line : fileData) {
+//				System.out.println("line : " + line);
+//			}
+//
+//		}catch (Exception e) {
+//			e.printStackTrace();
+//		}
 	}
 }
 
