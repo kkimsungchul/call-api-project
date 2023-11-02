@@ -42,6 +42,7 @@ public class JsonUtils {
             resultMap =  OBJECT_MAPPER.readValue(body, new TypeReference<Map<String, Object>>() {});
         }catch (Exception e){
             e.printStackTrace();
+            System.out.println("데이터 파싱 오류 - JSON을 Map으로 변환할 수 없습니다.");
         }
         return resultMap;
     }
