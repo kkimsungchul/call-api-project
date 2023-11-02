@@ -93,7 +93,7 @@ public class CallApi {
 	 * @return String  - 응답 받은 json 데이터
 	 */
     private String get(String strUrl , Map<String,String>keyMap){
-        BufferedReader br = null;
+
         String returnString="";
         try{
             URL url = new URL(strUrl);
@@ -117,22 +117,19 @@ public class CallApi {
 
             StringBuffer sb = new StringBuffer();
             if (con.getResponseCode() == HttpURLConnection.HTTP_OK){
-                br = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
-                String line = null;
-                while ((line = br.readLine()) != null){
-                	
-                    sb.append(line).append("\n");
+                try (BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"))) {
+                    String line = null;
+                    while ((line = br.readLine()) != null){
+                        sb.append(line).append("\n");
+                    }
+                    returnString = sb.toString();
                 }
-                returnString = sb.toString();
             }else{
             	System.out.println("error");
             }
         }catch(IOException ioe){
         	System.out.println("GET Rest API Url="+strUrl+", exceptionMessage="+ioe.getMessage());
-        }finally{
-            if(br != null){try{br.close();}catch(IOException e){}}
         }
-        
         return returnString;
     }
 	
@@ -144,9 +141,6 @@ public class CallApi {
      */
     private String post(String strUrl, Map<String,String>keyMap , String jsonMessage){
 		String returnString="";
-		OutputStreamWriter wr = null;
-        BufferedReader br = null;
-
         try {
             URL url = new URL(strUrl);
             HttpsURLConnection.setDefaultSSLSocketFactory(sslErrorPass().getSocketFactory());
@@ -161,30 +155,28 @@ public class CallApi {
             con.setDoOutput(true); //POST 데이터를 OutputStream으로 넘겨 주겠다는 설정 
 //            con.setUseCaches(false);
 //            con.setDefaultUseCaches(false);
+            try (OutputStreamWriter wr = new OutputStreamWriter(con.getOutputStream())) {
+                wr.write(jsonMessage); //json 형식의 message 전달
+                wr.flush();
+                StringBuffer sb = new StringBuffer();
+                if(con.getResponseCode() == HttpURLConnection.HTTP_OK){
+                    try (BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"))) {
 
-            wr = new OutputStreamWriter(con.getOutputStream());
-            wr.write(jsonMessage); //json 형식의 message 전달 
-            wr.flush();
-            StringBuffer sb = new StringBuffer();
-            if(con.getResponseCode() == HttpURLConnection.HTTP_OK){
-                br = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
-
-                String line = null;
-                while((line = br.readLine()) != null){
-                	System.out.println("## line : " + line);
-                	System.out.println( con.getResponseMessage());
-                    sb.append(line).append("\n");
+                        String line = null;
+                        while ((line = br.readLine()) != null) {
+                            System.out.println("## line : " + line);
+                            System.out.println(con.getResponseMessage());
+                            sb.append(line).append("\n");
+                        }
+                        returnString = sb.toString();
+                        System.out.println("POST Rest API Url=" + strUrl + ", responseStr=" + sb.toString());
+                    }
+                }else{
+                    System.out.println("POST Rest API Url="+strUrl+", responseCode="+con.getResponseCode()+", responseMessage=" + con.getResponseMessage());
                 }
-                returnString = sb.toString();
-                System.out.println("POST Rest API Url="+strUrl+", responseStr=" + sb.toString());
-            }else{
-            	System.out.println("POST Rest API Url="+strUrl+", responseCode="+con.getResponseCode()+", responseMessage=" + con.getResponseMessage());
             }
         }catch(IOException ioe){
         	System.out.println("POST Rest API Url="+strUrl+", exceptionMessage="+ioe.getMessage());
-        }finally{
-            if(br != null){try{br.close();}catch(IOException e){}}
-            if(wr != null){try{wr.close();}catch(IOException e){}}
         }
         
         return returnString;

@@ -22,7 +22,8 @@ public class Main {
 		keyMap.put("keyValue", "glpat-Zhadfg1235898GXMuCF2Fdgh1SD2nJjeBUb");
 
 		//호출할 URL
-		String url = "호출할 API URL 입력";
+		String getUrl = "https://jsonplaceholder.typicode.com/posts";
+		String postUrl = "https://jsonplaceholder.typicode.com/posts";
 
 		//넘길 JSON 데이터
 		Map<String,Object> jsonDataMap = new HashMap<String, Object>();
@@ -42,12 +43,14 @@ public class Main {
 
 
 		//Get 호출
-		Map<String,Object> getResultMap = callAPI.callRestAPI("get", url,null,keyMap);
+		Map<String,Object> getResultMap = callAPI.callRestAPI("get", getUrl,null,keyMap);
 		System.out.println("GET API return data : " + getResultMap);
 
 		//Post 호출
-		Map<String,Object> postResultMap = callAPI.callRestAPI("post", url, jsonData,keyMap);
+		Map<String,Object> postResultMap = callAPI.callRestAPI("post", postUrl, jsonData,keyMap);
 		System.out.println("POST API return data : " + postResultMap);
+
+
 
 
 

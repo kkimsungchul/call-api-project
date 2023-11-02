@@ -37,6 +37,7 @@ public class JsonUtils {
      * */
     public static Map<String,Object> convertJsonToMap(String body){
         Map<String,Object> resultMap = new HashMap<String, Object>();
+        System.out.println("### body : " + body);
         try{
             resultMap =  OBJECT_MAPPER.readValue(body, new TypeReference<Map<String, Object>>() {});
         }catch (Exception e){
